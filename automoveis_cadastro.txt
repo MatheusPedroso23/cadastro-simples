@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+#include <locale.h>
+
+typedef struct cadastroautomovelstruct{
+    char codigo[10];
+    char marca[30];
+    char modelo[30];
+    int ano;
+    float preco;
+}automovel;
+
+automovel automovel_cadastro;
+int qtdautomovel;
+int tamautomovel;
+int resposta;
+automovel *clientes;
+
+//declaracao funcoes dos procedimentos utilizados
+void menu();
+void resetar();
+void imprimir();
+automovel cadastro();
+
+int main() {
+    setlocale(LC_ALL,"portuguese");
+    menu();
+    return 0;
+}
+void menu() {
+    int opcao;
+    do {
+        printf(" \n selecione opcao:");
+        printf("\n 1. resetar automoveis: ");
+        printf("\n 2. Imprimir automoveis: ");
+        printf("\n 3. Cadastrar os automoveis: ");
+        printf("\n 4. sair\n");
+        printf("\n digite a opcao desejada: \n");
+        scanf("%d", &opcao);
+        switch (opcao) {
+            case 1:
+                resetar();
+                break;
+            case 2:
+                imprimir();
+                break;
+            case 3:
+                cadastro();
+                break;
+            default:
+                printf("\n Opcao nao existente.");
+
+        }
+
+    } while (opcao != 4);
+}
+
+void resetar() {
+    strcpy(automovel_cadastro.codigo, "NULL");
+    automovel_cadastro.ano = 0;
+    automovel_cadastro.preco = 0.0;
+    strcpy(automovel_cadastro.marca, "NULL");
+    strcpy(automovel_cadastro.modelo, "NULL");
+}
+
+automovel cadastro() {
+    int contador = 0;
+    do {
+
+        printf(" Digite a placa do automovel %d - :", contador + 1);
+        scanf("%s", &automovel_cadastro.codigo);
+        printf(" Digite o ano do automovel:  ");
+        scanf("%d", &automovel_cadastro.ano);
+        printf(" Digite o preco do automovel:  ");
+        scanf("%f", &automovel_cadastro.preco);
+        printf(" Digite o modelo do automovel: ");
+        scanf("%s", &automovel_cadastro.modelo);
+        printf(" Digite a marca do automovel: ");
+        scanf("%s", automovel_cadastro.marca);
+        printf(" \n cadastrado com sucesso.\n ");
+        contador++;
+        if(qtdautomovel == tamautomovel){
+            clientes = realloc(clientes, tamautomovel*sizeof(automovel));
+        }
+        clientes[qtdautomovel] = automovel_cadastro;
+        qtdautomovel++;
+        printf("\n Deseja cadastrar outro automovel? \n");
+        printf("\n 1. sim x 2. nao: \n");
+        scanf("%d", &resposta);
+    } while (resposta != 2);
+}
+void imprimir() {
+    int i;
+    for (i = 0; i < qtdautomovel; ++i) {
+
+
+        printf(" \n Codigo do automovel: %s", clientes[i].codigo);
+        printf(" \n Marca do automovel: %s", clientes[i].marca);
+        printf(" \n Modelo do automovel: %s", clientes[i].modelo);
+        printf(" \n Ano do automovel: %d", clientes[i].ano);
+        printf(" \n Preco do automovel: %.2f", clientes[i].preco);
+        printf("\n \n");
+    }
+}
